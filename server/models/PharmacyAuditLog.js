@@ -25,9 +25,18 @@ const pharmacyAuditLogSchema = new mongoose.Schema({
             'create',
             'update',
             'delete',
+            'receive',
+            'issue',
+            'transfer',
+            'return',
+            'consume',
+            'reingest',
+            'stock_take',
+            'generate_report',
             'dispense',
             'refund',
             'adjust_stock',
+            'recall',
             'login',
             'logout',
             'approve',
@@ -42,12 +51,17 @@ const pharmacyAuditLogSchema = new mongoose.Schema({
         enum: [
             'medicine',
             'batch',
+            'master_medicine_batch',
             'prescription',
             'transaction',
             'inventory',
             'user',
             'shift',
-            'fulfillment'
+            'fulfillment',
+            'gsr_lookup',
+            'medical_store_transaction',
+            'cath_lab_case',
+            'cath_lab_stock_transaction'
         ]
     },
     entityId: {

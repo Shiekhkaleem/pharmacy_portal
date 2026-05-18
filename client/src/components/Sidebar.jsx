@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, Building2, Calendar, Package, FileText, AlertTriangle, CreditCard, ShoppingCart } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Calendar, Package, FileText, AlertTriangle, CreditCard, ShoppingCart, ClipboardList } from 'lucide-react';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
@@ -47,6 +47,7 @@ const Sidebar = () => {
                     { path: '/pharmacy', label: 'Dashboard', icon: LayoutDashboard },
                     { path: '/pharmacy/prescriptions', label: 'Prescriptions', icon: FileText },
                     { path: '/pharmacy/inventory', label: 'Inventory', icon: Package },
+                    { path: '/pharmacy/gsr', label: 'AFIC GSR Stores', icon: ClipboardList },
                     { path: '/pharmacy/alerts', label: 'Stock Alerts', icon: AlertTriangle },
                     { path: '/pharmacy/pos', label: 'Point of Sale', icon: ShoppingCart },
                 ];

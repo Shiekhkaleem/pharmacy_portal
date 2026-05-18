@@ -100,31 +100,38 @@ exports.authorizePharmacyRole = (...roles) => {
                 });
             }
 
-            console.log(`[PharmacyAuth] Authorized: ${req.user.email} | Pharmacy Role: ${pharmacyUser.pharmacyRole} | Allowed: ${roles}`);
+            const activeRoles = Array.from(new Set([pharmacyUser.pharmacyRole, ...(pharmacyUser.pharmacyRoles || [])].filter(Boolean)));
+
+            console.log(`[PharmacyAuth] Authorized: ${req.user.email} | Pharmacy Roles: ${activeRoles.join(', ')} | Allowed: ${roles}`);
 
             // 4. Role Authorization
             // Admin role bypasses all checks
-            if (pharmacyUser.pharmacyRole === 'pharmacy_admin') {
+            if (activeRoles.includes('pharmacy_admin')) {
                 req.pharmacyUser = pharmacyUser;
                 req.pharmacyRole = pharmacyUser.pharmacyRole;
+                req.pharmacyRoles = activeRoles;
                 req.pharmacyId = pharmacyUser.pharmacyId;
                 return next();
             }
 
-            if (!roles.includes(pharmacyUser.pharmacyRole)) {
-                console.warn(`[PharmacyAuth] Access denied. User role ${pharmacyUser.pharmacyRole} not in ${roles}`);
+            const hasAllowedRole = activeRoles.some(role => roles.includes(role));
+
+            if (!hasAllowedRole) {
+                console.warn(`[PharmacyAuth] Access denied. User roles ${activeRoles.join(', ')} not in ${roles}`);
                 return res.status(403).json({
                     success: false,
                     message: `Access denied. Required role: ${roles.join(' or ')}`,
                     reason: 'ROLE_MISMATCH',
                     requiredRoles: roles,
-                    yourRole: pharmacyUser.pharmacyRole
+                    yourRole: pharmacyUser.pharmacyRole,
+                    yourRoles: activeRoles
                 });
             }
 
             // Attach pharmacy info to request
             req.pharmacyUser = pharmacyUser;
             req.pharmacyRole = pharmacyUser.pharmacyRole;
+            req.pharmacyRoles = activeRoles;
             req.pharmacyId = pharmacyUser.pharmacyId;
 
             next();
@@ -184,15 +191,40 @@ exports.checkPermission = (permission) => {
                     'view_transactions',
                     'view_audit_logs',
                     'view_reports'
+                ],
+                cath_lab_admin: ['all'],
+                cath_lab_store: [
+                    'view_inventory',
+                    'manage_inventory',
+                    'issue_stock',
+                    'receive_stock',
+                    'view_reports'
+                ],
+                nursing_user: [
+                    'view_inventory',
+                    'record_consumption',
+                    'return_stock'
+                ],
+                procedure_room_user: [
+                    'view_inventory',
+                    'record_consumption',
+                    'return_stock'
+                ],
+                executive: [
+                    'view_inventory',
+                    'view_transactions',
+                    'view_reports'
                 ]
             };
 
-            const userPermissions = rolePermissions[pharmacyUser.pharmacyRole] || [];
+            const activeRoles = Array.from(new Set([pharmacyUser.pharmacyRole, ...(pharmacyUser.pharmacyRoles || [])].filter(Boolean)));
+            const userPermissions = Array.from(new Set(activeRoles.flatMap(role => rolePermissions[role] || [])));
 
             // Admin has all permissions
             if (userPermissions.includes('all')) {
                 req.pharmacyUser = pharmacyUser;
                 req.pharmacyRole = pharmacyUser.pharmacyRole;
+                req.pharmacyRoles = activeRoles;
                 req.pharmacyId = pharmacyUser.pharmacyId;
                 return next();
             }
@@ -207,6 +239,7 @@ exports.checkPermission = (permission) => {
 
             req.pharmacyUser = pharmacyUser;
             req.pharmacyRole = pharmacyUser.pharmacyRole;
+            req.pharmacyRoles = activeRoles;
             req.pharmacyId = pharmacyUser.pharmacyId;
 
             next();
@@ -237,6 +270,7 @@ exports.attachPharmacyContext = async (req, res, next) => {
         if (pharmacyUser) {
             req.pharmacyUser = pharmacyUser;
             req.pharmacyRole = pharmacyUser.pharmacyRole;
+            req.pharmacyRoles = Array.from(new Set([pharmacyUser.pharmacyRole, ...(pharmacyUser.pharmacyRoles || [])].filter(Boolean)));
             // Handle both populated and unpopulated states
             req.pharmacyId = pharmacyUser.pharmacyId._id || pharmacyUser.pharmacyId;
             req.pharmacy = pharmacyUser.pharmacyId._id ? pharmacyUser.pharmacyId : null;

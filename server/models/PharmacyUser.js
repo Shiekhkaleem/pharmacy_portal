@@ -15,9 +15,35 @@ const pharmacyUserSchema = new mongoose.Schema({
     },
     pharmacyRole: {
         type: String,
-        enum: ['pharmacy_admin', 'pharmacist', 'cashier', 'inventory_manager', 'auditor'],
+        enum: [
+            'pharmacy_admin',
+            'pharmacist',
+            'cashier',
+            'inventory_manager',
+            'auditor',
+            'cath_lab_admin',
+            'cath_lab_store',
+            'nursing_user',
+            'procedure_room_user',
+            'executive'
+        ],
         required: true
     },
+    pharmacyRoles: [{
+        type: String,
+        enum: [
+            'pharmacy_admin',
+            'pharmacist',
+            'cashier',
+            'inventory_manager',
+            'auditor',
+            'cath_lab_admin',
+            'cath_lab_store',
+            'nursing_user',
+            'procedure_room_user',
+            'executive'
+        ]
+    }],
     status: {
         type: String,
         enum: ['pending', 'active', 'suspended', 'inactive'],
@@ -54,6 +80,7 @@ pharmacyUserSchema.index({ userId: 1, pharmacyId: 1 }, { unique: true });
 
 // Index for querying by pharmacy and role
 pharmacyUserSchema.index({ pharmacyId: 1, pharmacyRole: 1 });
+pharmacyUserSchema.index({ pharmacyId: 1, pharmacyRoles: 1 });
 
 // Index for status queries
 pharmacyUserSchema.index({ status: 1 });
@@ -61,6 +88,15 @@ pharmacyUserSchema.index({ status: 1 });
 // Virtual to check if user is active
 pharmacyUserSchema.virtual('isActive').get(function () {
     return this.status === 'active';
+});
+
+pharmacyUserSchema.virtual('allRoles').get(function () {
+    return Array.from(new Set([this.pharmacyRole, ...(this.pharmacyRoles || [])].filter(Boolean)));
+});
+
+pharmacyUserSchema.pre('save', function () {
+    const roles = Array.from(new Set([this.pharmacyRole, ...(this.pharmacyRoles || [])].filter(Boolean)));
+    this.pharmacyRoles = roles;
 });
 
 // Method to approve user

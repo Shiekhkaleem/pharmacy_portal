@@ -47,6 +47,11 @@ app.use('/api/pharmacy/inventory', require('./routes/pharmacyInventoryRoutes'));
 app.use('/api/pharmacy/prescriptions', require('./routes/pharmacyPrescriptionRoutes')); // Prescription fulfillment
 app.use('/api/pharmacy/pos', require('./routes/pharmacyPOSRoutes')); // Point of Sale
 
+// AFIC GSR Medical Store and Cath Lab Store Modules
+app.use('/api/gsr/lookups', require('./routes/gsrLookupRoutes')); // Admin-managed lookup values
+app.use('/api/gsr/main-store', require('./routes/gsrMainStoreRoutes')); // Main medical store workflows
+app.use('/api/gsr/cath-lab', require('./routes/cathLabStoreRoutes')); // Cath Lab store workflows
+
 // Master Medicine Registry (Centralized Medicine Database)
 app.use('/api/master-medicines', require('./routes/masterMedicineRoutes')); // Global medicine registry
 app.use('/api/pharmacy/master-inventory', require('./routes/masterMedicineBatchRoutes')); // Pharmacy-specific inventory

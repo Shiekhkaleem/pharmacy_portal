@@ -192,6 +192,8 @@ const masterMedicineBatchSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
+const makeInternalBarcode = () => `AFIC-BATCH-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+
 // Compound Indexes for Optimized Queries
 masterMedicineBatchSchema.index({ masterMedicineId: 1, pharmacyId: 1 });
 masterMedicineBatchSchema.index({ pharmacyId: 1, status: 1 });
@@ -282,6 +284,13 @@ masterMedicineBatchSchema.methods.softDelete = async function (userId) {
     this.deletedBy = userId;
     return this.save();
 };
+
+// Pre-save hook: Update status based on expiry and quantity
+masterMedicineBatchSchema.pre('validate', function () {
+    if (!this.barcode) {
+        this.barcode = makeInternalBarcode();
+    }
+});
 
 // Pre-save hook: Update status based on expiry and quantity
 masterMedicineBatchSchema.pre('save', async function () {

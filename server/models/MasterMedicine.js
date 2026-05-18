@@ -218,6 +218,8 @@ const masterMedicineSchema = new mongoose.Schema({
     toObject: { virtuals: true }
 });
 
+const makeInternalBarcode = () => `AFIC-ITEM-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+
 // Compound Indexes for Optimized Queries (50k+ records)
 masterMedicineSchema.index({ name: 1, manufacturer: 1 });
 masterMedicineSchema.index({ genericName: 1, category: 1 });
@@ -238,6 +240,12 @@ masterMedicineSchema.index({
         manufacturer: 3
     },
     name: 'MasterMedicineTextIndex'
+});
+
+masterMedicineSchema.pre('validate', function () {
+    if (!this.barcode) {
+        this.barcode = makeInternalBarcode();
+    }
 });
 
 // Virtual: Full Display Name

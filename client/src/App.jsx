@@ -36,6 +36,7 @@ import PrescriptionQueue from './pages/pharmacy/PrescriptionQueue';
 import MedicineInventory from './pages/pharmacy/MedicineInventory';
 import StockAlerts from './pages/pharmacy/StockAlerts';
 import POSInterface from './pages/pharmacy/POSInterface';
+import GsrInventorySuite from './pages/pharmacy/GsrInventorySuite';
 import PatientRegistration from './pages/staff/PatientRegistration';
 import PatientList from './pages/staff/PatientList';
 import PatientCheckIn from './pages/staff/PatientCheckIn';
@@ -112,6 +113,7 @@ function App() {
               <Route path="/pharmacy/inventory" element={<MedicineInventory />} />
               <Route path="/pharmacy/alerts" element={<StockAlerts />} />
               <Route path="/pharmacy/pos" element={<POSInterface />} />
+              <Route path="/pharmacy/gsr" element={<GsrInventorySuite />} />
             </Route>
 
             {/* Shared Routes */}

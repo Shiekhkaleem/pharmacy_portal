@@ -2,6 +2,7 @@ const MasterMedicine = require('../models/MasterMedicine');
 const MasterMedicineBatch = require('../models/MasterMedicineBatch');
 const PharmacyAuditLog = require('../models/PharmacyAuditLog');
 const Supplier = require('../models/Supplier');
+const mongoose = require('mongoose');
 
 // @desc    Get pharmacy inventory with pagination
 // @route   GET /api/pharmacy/master-inventory
@@ -359,7 +360,7 @@ exports.getInventoryStats = async (req, res) => {
                 status: 'expired'
             }),
             MasterMedicineBatch.aggregate([
-                { $match: { pharmacyId: mongoose.Types.ObjectId(pharmacyId), isDeleted: false } },
+                { $match: { pharmacyId: new mongoose.Types.ObjectId(String(pharmacyId)), isDeleted: false } },
                 {
                     $group: {
                         _id: null,
