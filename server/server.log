@@ -1,0 +1,10 @@
+
+> server@1.0.0 start
+> node index.js
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+--- RELOADING ROUTES ON PORT: 5000 ---
+UPR: getPatients function
+Server running on port 5000
+Socket.io enabled for real-time updates
+GET / - Body: undefined

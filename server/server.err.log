@@ -1,0 +1,48 @@
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"basicProfile.pharmacyCode":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"basicProfile.pharmacyName":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"licensing.licenseNumber":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"professionalDetails.licenseNumber":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"batchNumber":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"barcode":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"batchNumber":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"expiryDate":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"barcode":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"professionalDetails.registrationNumber":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"contact.email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"transactionId":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"prescriptionId":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(node:28480) [MONGOOSE] Warning: Duplicate schema index on {"supplierCode":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+MongoDB Connection Error: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors (D:\PharmacyFrontEnd\Pharmacy\server\node_modules\mongoose\lib\connection.js:1169:11)
+    at NativeConnection.openUri (D:\PharmacyFrontEnd\Pharmacy\server\node_modules\mongoose\lib\connection.js:1100:11)
+    at async connectDB (D:\PharmacyFrontEnd\Pharmacy\server\config\db.js:5:9) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  cause: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { 'localhost:27017' => [ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  }
+}
